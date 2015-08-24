@@ -1,7 +1,7 @@
 ;(function($){
   'use strict';
 
-  var regex = /\$\{\s*([a-zA-Z0-9\-\_]+)\s*\}/;
+  var regex = /\$\{\s*([a-zA-Z0-9\-\_]+)\s*\}/g;
 
   // Global variables available in all translations
   var globals;
@@ -11,6 +11,7 @@
   var markMissing = true;
   var translationPath;
   var postProcessor;
+  var keepPlaceholder;
 
   // Default postProcessor - replace newlines with line breaks
   var basePostProcessor = function(str) {
@@ -45,7 +46,15 @@
   function _interpolate(t, args) {
     var match;
     while(match = regex.exec(t)) {
-      t = t.replace(match[0], args[match[1]]);
+      var arg = args[match[1]];
+      if (arg === undefined) {
+        if (keepPlaceholder) {
+          arg = match[0];
+        } else {
+          arg = '';
+        }
+      }
+      t = t.replace(match[0], arg);
     }
     return t;
   }
@@ -68,15 +77,25 @@
     activeLocale = locale;
   }
 
-  function addTranslation(key, str, locale) {
+  function addTranslation() {
+    var translationObj, locale;
+    if (typeof arguments[0] === 'object') {
+      translationObj = arguments[0];
+      locale = arguments[1];
+    } else {
+      translationObj = {};
+      translationObj[arguments[0]] = arguments[1];
+      locale = arguments[2];
+    }
     locale = locale || activeLocale;
     translations[locale] = translations[locale] || {};
-    translations[locale][key] = str;
+    $.extend(translations[locale], translationObj);
   }
 
   function init(options) {
     translations = options.translations || {};
     translationPath = options.translationPath;
+    keepPlaceholder = options.keepPlaceholder;
     globals = options.globals || {};
     markMissing = options.markMissing === false ? false : markMissing;
     postProcessor = options.postProcessor === false ?
@@ -92,7 +111,7 @@
     }
     locale = locale || activeLocale;
     return $.ajax(translationPath + locale + '.json').done(function(response) {
-      translations[locale] = response;
+      addTranslation(response, locale);
       if (locale === activeLocale) {
         setLocale(locale);
       }
@@ -104,14 +123,16 @@
       throw new Error('Path is not defined');
     }
     return $.ajax(translationPath).done(function(response) {
-      translations = response;
+      $.each(response, function(locale, phrases) {
+        addTranslation(phrases, locale);
+      });
       setLocale(activeLocale);
     });
   }
 
   var I18n = {
     t: translate,
-    addTranslation: addTranslation,
+    add: addTranslation,
     init: init,
     loadSingle: loadSingle,
     loadAll: loadAll,

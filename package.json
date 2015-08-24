@@ -4,5 +4,5 @@
   "description": "I18n library with ES2015 syntax",
   "main": "index.js",
   "author": "",
-  "license": "ISC"
+  "license": "MIT"
 }

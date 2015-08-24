@@ -263,11 +263,11 @@ $(function() {
 
   QUnit.test('Test custom phrase', function(assert) {
     I18n.init({
-      translations: window.translations,
+      translations: cloneObj(window.translations), // Make sure we don't polute the default translations object
       active: 'queen'
     });
 
-    I18n.addTranslation('phrase-6', 'I\'m just a ${what}, I need no sympathy,');
+    I18n.add('phrase-6', 'I\'m just a ${what}, I need no sympathy,');
 
     assert.equal(I18n.t('phrase-6', {
       what: 'poor boy'
@@ -276,7 +276,7 @@ $(function() {
 
   QUnit.test('Test custom phrase with global', function(assert) {
     I18n.init({
-      translations: window.translations,
+      translations: cloneObj(window.translations), // Make sure we don't polute the default translations object
       active: 'queen',
       globals: {
         all: {
@@ -288,13 +288,65 @@ $(function() {
       }
     });
 
-    I18n.addTranslation('phrase-6', '${why} I\'m ${hard} come, ${hard} go,');
+    I18n.add('phrase-6', '${why} I\'m ${hard} come, ${hard} go,');
 
     assert.equal(I18n.t('phrase-6', {
       what: 'poor boy'
     }), 'Because I\'m easy come, easy go,', 'Correct custom phrase');
   });
 
+  QUnit.test('Test multiple custom phrases', function(assert) {
+    I18n.init({
+      translations: cloneObj(window.translations), // Make sure we don't polute the default translations object
+      active: 'queen'
+    });
+
+    I18n.add({'phrase-6': 'I\'m just a ${what}, I need no sympathy,',
+      'phrase-1': '${greeting}, is it me you\'re looking for?'
+    });
+
+    assert.equal(I18n.t('phrase-6', {
+      what: 'poor boy'
+    }), 'I\'m just a poor boy, I need no sympathy,', 'Correct custom phrase');
+    assert.equal(I18n.t('phrase-1', {
+      greeting: 'Hello'
+    }), 'Hello, is it me you\'re looking for?', 'Correct custom override');
+  });
+
+  QUnit.test('Test missing data (remove placeholder)', function(assert) {
+    I18n.init({
+      translations: window.translations,
+      active: 'queen',
+      globals: {
+        all: {
+          what: 'this'
+        }
+      }
+    });
+
+    assert.equal(I18n.t('phrase-1'), 'Is this the real ?', 'Placeholder removed');
+  });
+
+  QUnit.test('Test missing data (keep placeholder)', function(assert) {
+    I18n.init({
+      translations: window.translations,
+      active: 'queen',
+      keepPlaceholder: true,
+      globals: {
+        all: {
+          what: 'this'
+        }
+      }
+    });
+
+    assert.equal(I18n.t('phrase-1'), 'Is this the real ${ thingy}?', 'Placeholder kept');
+  });
+
   // TODO: Change locales
 
 });
+
+// Quick & dirty deep clone of an object
+function cloneObj(obj) {
+  return JSON.parse(JSON.stringify(obj));
+}

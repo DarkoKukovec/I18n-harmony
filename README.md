@@ -38,6 +38,8 @@ Initializes the library. Options:
   * default function will replace newlines with line breaks
 * active
   * active locale
+* keepPlaceholder (default: ``false``)
+  * keep the placeholder if the variable isn't defined
 
 #### loadAll
 Load the file with all the translations (translationPath)
@@ -45,8 +47,11 @@ Load the file with all the translations (translationPath)
 #### loadSingle(locale)
 Load the locale translation file (``<translationPath>/<locale>.json``)
 
-#### addTranslation(key, translation, [locale=activeLocale])
+#### add(key, translation, [locale=activeLocale])
 Add a translation to the locale
+
+#### add(translations, [locale=activeLocale])
+Add multiple translations to the locale. The first argument is a map of all the translations that should be added.
 
 #### t(key, [options])
 Get the interpolated string. Options is an object with local variables, and count parameter
