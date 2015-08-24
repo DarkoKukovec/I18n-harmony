@@ -11,11 +11,15 @@ Also supports:
 * Bower: ``bower install DarkoKukovec/I18n-harmony``
 * npm: ``npm install DarkoKukovec/I18n-harmony``
 
+Dependency: jQuery 1.7+
+
+Works as a AMD (Require.js) module, CommonJS (node.js) module or as a global library.
+
 ## Documentation
 
 ### Methods
 
-#### Init(options)
+#### init(options)
 Initializes the library. Options:
 * translations
   * Object with locales as keys and maps of translations as values
@@ -56,6 +60,6 @@ Get or set the active locale
 Get the globals object - object can be edited, but not replaced.
 
 ### Count
-If count property exists in the options object of the ``t`` function argument, it will try to find the special version of the translation that's adapted for multivalue. The key will in this case have a ``_one`` sufix (if count is 1), or ``_other`` sufix (for all other values of count). If the key doesn't exist, it will fallback to the original translation key.
+If count property exists in the options argument of the ``t`` function, it will try to find the special version of the translation that's customized for multiple phrasings. The key will in this case have a ``_one`` sufix (if count is 1), or ``_other`` sufix (for all other values of count). If the key doesn't exist, it will fallback to the original translation key.
 
 TODO: Add ability to define custom functions (per locale) to determine which suffix should be used.
