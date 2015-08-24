@@ -80,7 +80,7 @@ $(function() {
       active: 'queen'
     });
 
-    assert.equal(I18n.t('phrase-42'), 'queen: phrase-42', 'All inline translations were loaded');
+    assert.equal(I18n.t('phrase-42'), 'queen: phrase-42', 'Correct missing translation value');
   });
 
   QUnit.test('Check quiet missing translation', function(assert) {
@@ -98,7 +98,7 @@ $(function() {
       markMissing: false
     });
 
-    assert.equal(I18n.t('phrase-42'), 'phrase-42', 'All inline translations were loaded');
+    assert.equal(I18n.t('phrase-42'), 'phrase-42', 'Correct missing translation value');
   });
 
   QUnit.test('Test local data', function(assert) {
@@ -152,6 +152,46 @@ $(function() {
     });
 
     assert.equal(I18n.t('phrase-4'), 'No Escape from reality.', 'Correct locale global');
+  });
+
+  QUnit.test('Test local override', function(assert) {
+    I18n.init({
+      translations: window.translations,
+      globals: {
+        all: {
+          what: 'this'
+        },
+        queen: {
+          solution: 'Escape',
+          what: 'reality'
+        }
+      },
+      active: 'queen'
+    });
+
+    assert.equal(I18n.t('phrase-4', {
+      what: 'taxes'
+    }), 'No Escape from taxes.', 'Correct local value');
+  });
+
+  QUnit.test('Test global update', function(assert) {
+    I18n.init({
+      translations: window.translations,
+      globals: {
+        all: {
+          what: 'this'
+        },
+        queen: {
+          solution: 'Escape',
+          what: 'reality'
+        }
+      },
+      active: 'queen'
+    });
+
+    I18n.globals.queen.what = 'taxes';
+
+    assert.equal(I18n.t('phrase-4'), 'No Escape from taxes.', 'Correct global update');
   });
 
   QUnit.test('Test multiline', function(assert) {

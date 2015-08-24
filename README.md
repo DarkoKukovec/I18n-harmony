@@ -4,4 +4,58 @@ I18n library that's using ES2015 [template string](https://developer.mozilla.org
 
 Also supports:
 * Global variables (either per locale or for all of them)
-* Translation postprocessor
+* Translation postProcessor
+
+## How to install
+
+* Bower: ``bower install DarkoKukovec/I18n-harmony``
+* npm: ``npm install DarkoKukovec/I18n-harmony``
+
+## Documentation
+
+### Methods
+
+#### Init(options)
+Initializes the library. Options:
+* translations
+  * Object with locales as keys and maps of translations as values
+* translationPath
+  * location of the translation files
+  * direct path to json if loadAll is used
+  * path to the folder if loadSingle is used
+* globals
+  * keys are locale names or "all"
+  * values are maps of global variables
+* markMissing (default: ``true``)
+  * if a translation is missing, it will add ``locale: `` in front of the key when it's returned by the ``t`` function
+* postProcessor
+  * function that will be executed just before the ``t`` function returns the result
+  * receives one argument - the interpolated string
+  * default function will replace newlines with line breaks
+* active
+  * active locale
+
+#### loadAll
+Load the file with all the translations (translationPath)
+
+#### loadSingle(locale)
+Load the locale translation file (``<translationPath>/<locale>.json``)
+
+#### addTranslation(key, translation, [locale=activeLocale])
+Add a translation to the locale
+
+#### t(key, [options])
+Get the interpolated string. Options is an object with local variables, and count parameter
+
+### Properties
+
+#### locale
+Get or set the active locale
+
+#### globals (read-only)
+Get the globals object - object can be edited, but not replaced.
+
+### Count
+If count property exists in the options object of the ``t`` function argument, it will try to find the special version of the translation that's adapted for multivalue. The key will in this case have a ``_one`` sufix (if count is 1), or ``_other`` sufix (for all other values of count). If the key doesn't exist, it will fallback to the original translation key.
+
+TODO: Add ability to define custom functions (per locale) to determine which suffix should be used.

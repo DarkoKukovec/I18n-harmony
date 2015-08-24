@@ -1,7 +1,7 @@
 ;(function($){
   'use strict';
 
-  var regex = /\$\{\s*([a-zA-Z0-9\-\_]+)\s*\}/; ///\$\{\s*(\S)\s*\}/;
+  var regex = /\$\{\s*([a-zA-Z0-9\-\_]+)\s*\}/;
 
   // Global variables available in all translations
   var globals;
@@ -128,7 +128,7 @@
     define(I18n);
   } else if ( hasExports ) { // Node.js Module
     module.exports = I18n;
-  } else { // Assign to common namespaces or simply the global object
+  } else { // Assign to the global object
     root.I18n = I18n;
   }
 
