@@ -21,9 +21,10 @@ gulp.task('test', ['lint'], function (cb) {
         .pipe(mocha())
         .pipe(istanbul.writeReports({
           dir: './report',
-          reporters: ['lcovonly', 'text', 'text-summary'],
+          reporters: ['lcovonly', 'text', 'text-summary', 'html'],
           reportOpts: {
-            lcovonly: { dir: './report', file: 'lcov.info' }
+            lcovonly: { dir: './report', file: 'lcov.info' },
+            html: { dir: './report' }
           }
         }))
         .pipe(istanbul.enforceThresholds({ thresholds: { global: 90 } }))

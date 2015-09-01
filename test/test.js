@@ -20,6 +20,14 @@ describe('Initialization', function() {
 
     expect(I18n.t('phrase-2')).to.equal('Is this just fantasy?');
   });
+
+  it('should initialize without translations', function() {
+    I18n.init({
+      active: 'queen'
+    });
+
+    expect(I18n.t('phrase-2')).to.equal('queen: phrase-2');
+  });
 });
 
 describe('Missing translation', function() {

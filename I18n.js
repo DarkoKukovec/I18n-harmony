@@ -26,7 +26,6 @@
 
   var hasDefine = typeof define === 'function';
   var hasExports = typeof module !== 'undefined' && module.exports;
-  // var root = window || global; // window before global because of nwjs.io
   var root = global || window;
 
   if (hasDefine) { // AMD Module
@@ -95,7 +94,7 @@
   }
 
   function setLocale(locale) {
-    localeTranslations = translations[locale];
+    localeTranslations = translations[locale] || {};
     activeLocale = locale;
   }
 
