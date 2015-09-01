@@ -1,0 +1,7 @@
+language: javascript
+install:
+  - npm install
+after_script:
+  - codeclimate-test-reporter < report/lcov.info
+script:
+  - gulp test
