@@ -119,9 +119,7 @@
     markMissing = options.markMissing === false ? false : markMissing;
     postProcessor = options.postProcessor === false ?
       null : (options.postProcessor || basePostProcessor);
-    if (options.active) {
-      setLocale(options.active);
-    }
+    setLocale(options.active);
   }
 
 })();
