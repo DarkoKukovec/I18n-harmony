@@ -9,7 +9,6 @@
   var translations;
   var localeTranslations;
   var markMissing = true;
-  var translationPath;
   var postProcessor;
   var keepPlaceholder;
   var _;
@@ -72,13 +71,14 @@
   }
 
   function _interpolate(t, args) {
-    var match;
-    while(match = regex.exec(t)) {
+    var match = regex.exec(t);
+    while(match) {
       var arg = args[match[1]];
       if (arg === undefined) {
         arg = keepPlaceholder ? match[0] : '';
       }
       t = t.replace(match[0], arg);
+      match = regex.exec(t);
     }
     return t;
   }
@@ -93,9 +93,6 @@
   }
 
   function setLocale(locale) {
-    if (!translations[locale]) {
-      console.warn('There are no traslations for ' + locale);
-    }
     localeTranslations = translations[locale];
     activeLocale = locale;
   }
@@ -117,7 +114,6 @@
 
   function init(options) {
     translations = options.translations || {};
-    translationPath = options.translationPath;
     keepPlaceholder = options.keepPlaceholder;
     globals = options.globals || {};
     markMissing = options.markMissing === false ? false : markMissing;

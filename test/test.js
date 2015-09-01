@@ -326,7 +326,7 @@ describe('I18n', function() {
 
   describe('Locale change', function() {
     // TODO
-  })
+  });
 });
 
 // Quick & dirty deep clone of an object
