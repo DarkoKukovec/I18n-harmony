@@ -13,6 +13,33 @@
   var postProcessor;
   var keepPlaceholder;
 
+  var I18n = {
+    t: translate,
+    add: addTranslation,
+    init: init,
+    loadSingle: loadSingle,
+    loadAll: loadAll,
+    set locale(locale) { setLocale(locale); },
+    get locale() { return activeLocale; },
+    get globals() { return globals; }
+  };
+
+  var hasDefine = typeof define === 'function';
+  var hasExports = typeof module !== 'undefined' && module.exports;
+  var root = window || global; // window before global because of nwjs.io
+
+  if (hasDefine) { // AMD Module
+    define(['jquery'], function(jQuery) {
+      $ = jQuery;
+      return I18n;
+    });
+  } else if (hasExports) { // Node.js Module
+    $ = $ || require('jquery');
+    module.exports = I18n;
+  } else { // Assign to the global object
+    root.I18n = I18n;
+  }
+
   // Default postProcessor - replace newlines with line breaks
   var basePostProcessor = function(str) {
     return str.replace(/\n/g, '<br />');
@@ -48,11 +75,7 @@
     while(match = regex.exec(t)) {
       var arg = args[match[1]];
       if (arg === undefined) {
-        if (keepPlaceholder) {
-          arg = match[0];
-        } else {
-          arg = '';
-        }
+        arg = keepPlaceholder ? match[0] : '';
       }
       t = t.replace(match[0], arg);
     }
@@ -128,29 +151,6 @@
       });
       setLocale(activeLocale);
     });
-  }
-
-  var I18n = {
-    t: translate,
-    add: addTranslation,
-    init: init,
-    loadSingle: loadSingle,
-    loadAll: loadAll,
-    set locale(locale) { setLocale(locale); },
-    get locale() { return activeLocale; },
-    get globals() { return globals; }
-  };
-
-  var hasDefine = typeof define === 'function';
-  var hasExports = typeof module !== 'undefined' && module.exports;
-  var root = window || global; // window before global because of nwjs.io
-
-  if ( hasDefine ) { // AMD Module
-    define(I18n);
-  } else if ( hasExports ) { // Node.js Module
-    module.exports = I18n;
-  } else { // Assign to the global object
-    root.I18n = I18n;
   }
 
 })($);
