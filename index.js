@@ -60,7 +60,6 @@
   }
 
   function _prepareArgs(args) {
-    var glob = Object.create
     return $.extend({}, globals.all || {}, globals[activeLocale] || {}, args);
   }
 
