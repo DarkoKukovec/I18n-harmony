@@ -1,5 +1,8 @@
 # I18n-harmony
 
+[![Code Climate](https://codeclimate.com/github/DarkoKukovec/I18n-harmony/badges/gpa.svg)](https://codeclimate.com/github/DarkoKukovec/I18n-harmony)
+[![Test Coverage](https://codeclimate.com/github/DarkoKukovec/I18n-harmony/badges/coverage.svg)](https://codeclimate.com/github/DarkoKukovec/I18n-harmony/coverage)
+
 I18n library that's using ES2015 [template string](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/template_strings) syntax (but with reduced functionality).
 
 Also supports:

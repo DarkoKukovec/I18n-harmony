@@ -1,6 +1,6 @@
 {
   "name": "I18n",
-  "main": "index.js",
+  "main": "I18n.js",
   "version": "1.0.0",
   "authors": [
     "Darko Kukovec <darko@kukovec.eu>"

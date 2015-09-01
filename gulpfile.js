@@ -1,17 +1,19 @@
+/* eslint no-console:0 */
+
 var gulp = require('gulp');
 var mocha = require('gulp-mocha');
 var istanbul = require('gulp-istanbul');
 var eslint = require('gulp-eslint');
 
 gulp.task('lint', function () {
-  return gulp.src(['index.js', 'test/*.js'])
+  return gulp.src(['I18n.js', 'test/*.js'])
     .pipe(eslint())
     .pipe(eslint.format())
     .pipe(eslint.failOnError());
 });
 
 gulp.task('test', ['lint'], function (cb) {
-  gulp.src(['index.js'])
+  gulp.src(['I18n.js'])
     .pipe(istanbul())
     .pipe(istanbul.hookRequire())
     .on('finish', function () {

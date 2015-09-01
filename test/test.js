@@ -1,6 +1,6 @@
 var assert = require('assert');
 var expect = require('chai').expect;
-var I18n = require('../index');
+var I18n = require('../I18n');
 var globalTranslations = require('./mock/translations.js');
 
 describe('Initialization', function() {
