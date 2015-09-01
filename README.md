@@ -11,7 +11,7 @@ Also supports:
 * Bower: ``bower install DarkoKukovec/I18n-harmony``
 * npm: ``npm install DarkoKukovec/I18n-harmony``
 
-Dependency: jQuery 1.7+
+Dependency: lodash 3.x
 
 Works as a AMD (Require.js) module, CommonJS (node.js) module or as a global library.
 
@@ -40,12 +40,6 @@ Initializes the library. Options:
   * active locale
 * keepPlaceholder (default: ``false``)
   * keep the placeholder if the variable isn't defined
-
-#### loadAll
-Load the file with all the translations (translationPath)
-
-#### loadSingle(locale)
-Load the locale translation file (``<translationPath>/<locale>.json``)
 
 #### add(key, translation, [locale=activeLocale])
 Add a translation to the locale

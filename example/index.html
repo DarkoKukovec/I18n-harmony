@@ -3,24 +3,23 @@
   <head>
     <meta charset="utf-8" />
     <title>I18n-harmony example</title>
-    <script type="text/javascript" src="../bower_components/jquery/dist/jquery.js"></script>
+    <script type="text/javascript" src="../bower_components/lodash/lodash.js"></script>
     <script type="text/javascript" src="mock/translations.js"></script>
     <script type="text/javascript" src="../index.js"></script>
-    <script type="text/javascript">
-      $(function() {
-        I18n.init({
-          translations: window.translations,
-          active: 'queen'
-        });
-
-        var rhapsody = [];
-
-        alert('TODO!');
-
-        $(document.body).html(rhapsody.join('<br />'));
-      });
-    </script>
   </head>
   <body>
+    <div class="output"></div>
+    <script type="text/javascript">
+      I18n.init({
+        translations: window.translations,
+        active: 'queen'
+      });
+
+      var rhapsody = [];
+
+      alert('TODO!');
+
+      document.querySelector('.output').innerHTML = rhapsody.join('<br />');
+    </script>
   </body>
 </html>

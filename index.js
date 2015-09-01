@@ -1,4 +1,4 @@
-;(function($){
+;(function(){
   'use strict';
 
   var regex = /\$\{\s*([a-zA-Z0-9\-\_]+)\s*\}/g;
@@ -12,13 +12,12 @@
   var translationPath;
   var postProcessor;
   var keepPlaceholder;
+  var _;
 
   var I18n = {
     t: translate,
     add: addTranslation,
     init: init,
-    loadSingle: loadSingle,
-    loadAll: loadAll,
     set locale(locale) { setLocale(locale); },
     get locale() { return activeLocale; },
     get globals() { return globals; }
@@ -26,17 +25,19 @@
 
   var hasDefine = typeof define === 'function';
   var hasExports = typeof module !== 'undefined' && module.exports;
-  var root = window || global; // window before global because of nwjs.io
+  // var root = window || global; // window before global because of nwjs.io
+  var root = global || window;
 
   if (hasDefine) { // AMD Module
-    define(['jquery'], function(jQuery) {
-      $ = jQuery;
+    define(['lodash'], function(lodash) {
+      _ = lodash;
       return I18n;
     });
   } else if (hasExports) { // Node.js Module
-    $ = $ || require('jquery');
+    _ = require('lodash');
     module.exports = I18n;
   } else { // Assign to the global object
+    _ = root._;
     root.I18n = I18n;
   }
 
@@ -83,7 +84,7 @@
   }
 
   function _prepareArgs(args) {
-    return $.extend({}, globals.all || {}, globals[activeLocale] || {}, args);
+    return _.extend({}, globals.all || {}, globals[activeLocale] || {}, args);
   }
 
   function _getSuffix(count) {
@@ -111,7 +112,7 @@
     }
     locale = locale || activeLocale;
     translations[locale] = translations[locale] || {};
-    $.extend(translations[locale], translationObj);
+    _.extend(translations[locale], translationObj);
   }
 
   function init(options) {
@@ -127,29 +128,4 @@
     }
   }
 
-  function loadSingle(locale) {
-    if (!translationPath) {
-      throw new Error('Path is not defined');
-    }
-    locale = locale || activeLocale;
-    return $.ajax(translationPath + locale + '.json').done(function(response) {
-      addTranslation(response, locale);
-      if (locale === activeLocale) {
-        setLocale(locale);
-      }
-    });
-  }
-
-  function loadAll() {
-    if (!translationPath) {
-      throw new Error('Path is not defined');
-    }
-    return $.ajax(translationPath).done(function(response) {
-      $.each(response, function(locale, phrases) {
-        addTranslation(phrases, locale);
-      });
-      setLocale(activeLocale);
-    });
-  }
-
-})($);
+})();
