@@ -18,6 +18,7 @@
     "lodash": "^3"
   },
   "scripts": {
-    "precommit": "gulp test"
+    "precommit": "gulp test",
+    "test": "gulp test"
   }
 }
