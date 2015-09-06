@@ -26,7 +26,7 @@
 
   var hasDefine = typeof define === 'function';
   var hasExports = typeof module !== 'undefined' && module.exports;
-  var root = global || window;
+  var root = (typeof window === 'undefined') ? global : window;
 
   if (hasDefine) { // AMD Module
     define(['lodash'], function(lodash) {
