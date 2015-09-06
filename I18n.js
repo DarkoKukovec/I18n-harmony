@@ -13,7 +13,6 @@
   var markMissing = true;
   var postProcessor;
   var keepPlaceholder;
-  var _;
 
   var I18n = {
     t: translate,
@@ -29,15 +28,12 @@
   var root = (typeof window === 'undefined') ? global : window;
 
   if (hasDefine) { // AMD Module
-    define(['lodash'], function(lodash) {
-      _ = lodash;
+    define([], function() {
       return I18n;
     });
   } else if (hasExports) { // Node.js Module
-    _ = require('lodash');
     module.exports = I18n;
   } else { // Assign to the global object
-    _ = root._;
     root.I18n = I18n;
   }
 
@@ -84,13 +80,27 @@
     return t;
   }
 
-  function _prepareArgs(args) {
-    return _.extend({}, globals.all || {}, globals[activeLocale] || {}, args);
-  }
-
   function _getSuffix(count) {
     // TODO: Ability to change this from outside (per language)
     return (count === 1 ? '_one' : '_other');
+  }
+
+  function _prepareArgs(args) {
+    var prepared = {};
+    _extend(prepared, globals.all);
+    _extend(prepared, globals[activeLocale]);
+    _extend(prepared, args);
+    return prepared;
+  }
+
+  function _extend(original, additional) {
+    additional = additional || {};
+    for (var key in additional) {
+      if (additional.hasOwnProperty(key)) {
+        original[key] = additional[key];
+      }
+    }
+    return original;
   }
 
   function setLocale(locale) {
@@ -110,7 +120,7 @@
     }
     locale = locale || activeLocale;
     translations[locale] = translations[locale] || {};
-    _.extend(translations[locale], translationObj);
+    _extend(translations[locale], translationObj);
   }
 
   function init(options) {

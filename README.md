@@ -16,7 +16,7 @@ Also supports:
 * Bower: ``bower install DarkoKukovec/I18n-harmony``
 * npm: ``npm install DarkoKukovec/I18n-harmony``
 
-Dependency: lodash 3.x
+Dependency: None
 
 Works as a AMD (Require.js) module, CommonJS (node.js) module or as a global library.
 

@@ -1,6 +1,9 @@
 var expect = require('chai').expect;
 var I18n = require('../I18n');
 var globalTranslations = require('./mock/translations.js');
+var requirejs = require('requirejs');
+
+requirejs.config({ baseUrl: '.' });
 
 describe('Initialization', function() {
   it('should initialize all inline translations', function() {
@@ -20,6 +23,15 @@ describe('Initialization', function() {
     I18n.init({ active: 'queen' });
 
     expect(I18n.t('phrase-2')).to.equal('queen: phrase-2');
+  });
+
+  it('should initialize with requirejs', function(done) {
+    requirejs(['I18n'], function(requireI18n) {
+      requireI18n.init({ active: 'queen' });
+
+      expect(requireI18n.t('phrase-2')).to.equal('queen: phrase-2');
+      done();
+    });
   });
 });
 
