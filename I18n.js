@@ -69,12 +69,15 @@
 
   function _interpolate(t, args) {
     var match = regex.exec(t);
+    var lastIndex = 0;
     while(match) {
       var arg = args[match[1]];
       if (arg === undefined) {
         arg = keepPlaceholder ? match[0] : '';
+        lastIndex = keepPlaceholder ? regex.lastIndex : lastIndex;
       }
       t = t.replace(match[0], arg);
+      regex.lastIndex = lastIndex; // Bug #1 - Need to reset the position in case the placeholder is longer than the value
       match = regex.exec(t);
     }
     return t;

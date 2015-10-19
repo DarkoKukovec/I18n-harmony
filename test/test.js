@@ -315,6 +315,24 @@ describe('Locale', function() {
   });
 });
 
+describe('Bugs', function() {
+  it('should work if the string is shorter than the placeholder (Bug #1)', function() {
+    I18n.init({
+      translations: {
+        en: {
+          'test': 'Testing ${veryLongPlaceholderName} ${anotherVeryLongPlaceholderName}'
+        }
+      },
+      active: 'en'
+    });
+
+    expect(I18n.t('test', {
+      veryLongPlaceholderName: 'long',
+      anotherVeryLongPlaceholderName: 'names'
+    })).to.equal('Testing long names');
+  });
+});
+
 // Quick & dirty deep clone of an object
 function cloneObj(obj) {
   return JSON.parse(JSON.stringify(obj));
