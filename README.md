@@ -13,8 +13,8 @@ Also supports:
 
 ## How to install
 
-* Bower: ``bower install DarkoKukovec/I18n-harmony``
-* npm: ``npm install DarkoKukovec/I18n-harmony``
+* Bower: ``bower install I18n-harmony``
+* npm: ``npm install I18n-harmony``
 
 Dependency: None
 
