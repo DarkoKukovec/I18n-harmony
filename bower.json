@@ -1,5 +1,5 @@
 {
-  "name": "I18n",
+  "name": "I18n-harmony",
   "main": "I18n.js",
   "version": "1.0.0",
   "authors": [
@@ -17,8 +17,5 @@
     "amd",
     "globals",
     "node"
-  ],
-  "dependencies": {
-    "lodash": "^3"
-  }
+  ]
 }

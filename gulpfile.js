@@ -4,8 +4,6 @@ var gulp = require('gulp');
 var mocha = require('gulp-mocha');
 var istanbul = require('gulp-istanbul');
 var eslint = require('gulp-eslint');
-// var merger = require ('lcov-result-merger');
-var Server = require('karma').Server;
 
 gulp.task('lint', function () {
   return gulp.src(['I18n.js', 'test/*.js'])
@@ -34,18 +32,3 @@ gulp.task('test', ['lint'], function (cb) {
         .on('end', cb);
     });
 });
-
-gulp.task('test-karma', function(cb) {
-  new Server({
-    configFile: __dirname + '/test/karma.conf.js',
-    singleRun: true
-  }, function() {
-    cb();
-  }).start();
-});
-
-// gulp.task('test', ['test-node', 'test-karma'], function() {
-//   gulp.src(['report/node/lcov.info', 'report/karma/**/lcov.info'])
-//     .pipe(merger())
-//     .pipe(gulp.dest('./report/'));
-// });
