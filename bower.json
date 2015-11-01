@@ -1,7 +1,7 @@
 {
   "name": "i18n-harmony",
   "main": "I18n.js",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "authors": [
     "Darko Kukovec <darko@kukovec.eu>"
   ],

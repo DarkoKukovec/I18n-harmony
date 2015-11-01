@@ -4,6 +4,7 @@
 [![Test Coverage](https://codeclimate.com/github/DarkoKukovec/I18n-harmony/badges/coverage.svg)](https://codeclimate.com/github/DarkoKukovec/I18n-harmony/coverage)
 [![Build Status](https://travis-ci.org/DarkoKukovec/I18n-harmony.svg?branch=master)](https://travis-ci.org/DarkoKukovec/I18n-harmony)
 [![Dependency Status](https://david-dm.org/DarkoKukovec/I18n-harmony.svg)](https://david-dm.org/DarkoKukovec/I18n-harmony)
+[![devDependency Status](https://david-dm.org/DarkoKukovec/I18n-harmony/dev-status.svg)](https://david-dm.org/DarkoKukovec/I18n-harmony#info=devDependencies)
 
 I18n library that's using ES2015 [template string](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/template_strings) syntax (but with reduced functionality).
 
