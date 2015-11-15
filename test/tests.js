@@ -1,14 +1,15 @@
+var I18n = global.I18n;
 var expect = require('chai').expect;
-var I18n = require('../I18n');
 var globalTranslations = require('./mock/translations.js');
 var requirejs = require('requirejs');
+var _ = require('lodash');
 
 requirejs.config({ baseUrl: '.' });
 
 describe('Initialization', function() {
   it('should initialize all inline translations', function() {
     I18n.init({
-      translations: cloneObj(globalTranslations),
+      translations: _.cloneDeep(globalTranslations),
       globals: {
         all: { what: 'this' },
         queen: { solution: 'Escape' }
@@ -38,7 +39,7 @@ describe('Initialization', function() {
 describe('Missing translation', function() {
   it('should mark a missing translation with the locale code', function() {
     I18n.init({
-      translations: cloneObj(globalTranslations),
+      translations: _.cloneDeep(globalTranslations),
       globals: {
         all: { what: 'this' },
         queen: { solution: 'Escape' }
@@ -51,7 +52,7 @@ describe('Missing translation', function() {
 
   it('should return the translation key if the translation is not defined', function() {
     I18n.init({
-      translations: cloneObj(globalTranslations),
+      translations: _.cloneDeep(globalTranslations),
       globals: {
         all: { what: 'this' },
         queen: { solution: 'Escape' }
@@ -67,7 +68,7 @@ describe('Missing translation', function() {
 describe('Variable interpolation', function() {
   before(function() {
     I18n.init({
-      translations: cloneObj(globalTranslations),
+      translations: _.cloneDeep(globalTranslations),
       globals: {
         all: { what: 'this' },
         queen: {
@@ -100,7 +101,7 @@ describe('Variable interpolation', function() {
 describe('Quantity', function() {
   before(function() {
     I18n.init({
-      translations: cloneObj(globalTranslations),
+      translations: _.cloneDeep(globalTranslations),
       globals: {
         all: { what: 'this' },
         queen: { solution: 'Escape' }
@@ -125,7 +126,7 @@ describe('Quantity', function() {
 describe('PostProcessor', function() {
   it('should not replace the newline character if postProcessor is disabled', function() {
     I18n.init({
-      translations: cloneObj(globalTranslations),
+      translations: _.cloneDeep(globalTranslations),
       globals: {
         all: { what: 'this' },
         queen: {
@@ -145,7 +146,7 @@ describe('PostProcessor', function() {
 
   it('should execute the custom defined postProcessor function', function() {
     I18n.init({
-      translations: cloneObj(globalTranslations),
+      translations: _.cloneDeep(globalTranslations),
       globals: {
         all: { what: 'this' },
         queen: {
@@ -167,7 +168,7 @@ describe('PostProcessor', function() {
 
   it('should replace newlines with breaks if the default postProcessor is used', function() {
     I18n.init({
-      translations: cloneObj(globalTranslations),
+      translations: _.cloneDeep(globalTranslations),
       globals: {
         all: { what: 'this' },
         queen: {
@@ -188,7 +189,7 @@ describe('PostProcessor', function() {
 describe('Custom phrases', function() {
   before(function() {
     I18n.init({
-      translations: cloneObj(globalTranslations),
+      translations: _.cloneDeep(globalTranslations),
       active: 'queen',
       globals: {
         all: { hard: 'easy' },
@@ -210,7 +211,7 @@ describe('Custom phrases', function() {
   describe('Multiple custom phrases', function() {
     before(function() {
       I18n.init({
-        translations: cloneObj(globalTranslations),
+        translations: _.cloneDeep(globalTranslations),
         active: 'queen'
       });
 
@@ -236,7 +237,7 @@ describe('Custom phrases', function() {
 describe('Missing data', function() {
   it('should remove the placeholder if the variable is not defined', function() {
     I18n.init({
-      translations: cloneObj(globalTranslations),
+      translations: _.cloneDeep(globalTranslations),
       active: 'queen',
       globals: {
         all: { what: 'this'}
@@ -248,7 +249,7 @@ describe('Missing data', function() {
 
   it('should keep the placeholder if keepPlaceholder is set, and the variable is not defined', function() {
     I18n.init({
-      translations: cloneObj(globalTranslations),
+      translations: _.cloneDeep(globalTranslations),
       active: 'queen',
       keepPlaceholder: true,
       globals: {
@@ -262,14 +263,14 @@ describe('Missing data', function() {
 
 describe('Locale', function() {
   it('should throw an error if the active locale is not selected', function() {
-    I18n.init({ translations: cloneObj(globalTranslations) });
+    I18n.init({ translations: _.cloneDeep(globalTranslations) });
 
     expect(function() { I18n.t('phrase-2'); }).to.throw('Active locale is not set');
   });
 
   it('should have the correct locale set', function() {
     I18n.init({
-      translations: cloneObj(globalTranslations),
+      translations: _.cloneDeep(globalTranslations),
       active: 'queen'
     });
 
@@ -332,8 +333,3 @@ describe('Bugs', function() {
     })).to.equal('Testing long names');
   });
 });
-
-// Quick & dirty deep clone of an object
-function cloneObj(obj) {
-  return JSON.parse(JSON.stringify(obj));
-}

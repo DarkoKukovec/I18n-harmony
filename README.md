@@ -8,16 +8,18 @@
 
 I18n library that's using ES2015 [template string](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/template_strings) syntax (but with reduced functionality).
 
+Minified: ~1.1KB (~650B gziped)
+
 Also supports:
 * Global variables (either per locale or for all of them)
 * Translation postProcessor
 
 ## How to install
 
-* Bower: ``bower install I18n-harmony``
-* npm: ``npm install I18n-harmony``
+* Bower: ``bower install i18n-harmony``
+* npm: ``npm install i18n-harmony``
 
-Dependency: None
+Dependencies: None
 
 Works as a AMD (Require.js) module, CommonJS (node.js) module or as a global library.
 
@@ -29,10 +31,6 @@ Works as a AMD (Require.js) module, CommonJS (node.js) module or as a global lib
 Initializes the library. Options:
 * translations
   * Object with locales as keys and maps of translations as values
-* translationPath
-  * location of the translation files
-  * direct path to json if loadAll is used
-  * path to the folder if loadSingle is used
 * globals
   * keys are locale names or "all"
   * values are maps of global variables

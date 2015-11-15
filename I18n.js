@@ -15,16 +15,16 @@
   var keepPlaceholder;
 
   var I18n = {
-    t: translate,
-    add: addTranslation,
-    init: init,
-    set locale(locale) { setLocale(locale); },
-    get locale() { return activeLocale; },
-    get globals() { return globals; }
+    't': translate,
+    'add': addTranslation,
+    'init': init,
+    set 'locale'(locale) { setLocale(locale); },
+    get 'locale'() { return activeLocale; },
+    get 'globals'() { return globals; }
   };
 
   var hasDefine = typeof define === 'function';
-  var hasExports = typeof module !== 'undefined' && module.exports;
+  var hasExports = typeof module !== 'undefined' && module['exports'];
   var root = (typeof window === 'undefined') ? global : window;
 
   if (hasDefine) { // AMD Module
@@ -32,9 +32,9 @@
       return I18n;
     });
   } else if (hasExports) { // Node.js Module
-    module.exports = I18n;
+    module['exports'] = I18n;
   } else { // Assign to the global object
-    root.I18n = I18n;
+    root['I18n'] = I18n;
   }
 
   // Default postProcessor - replace newlines with line breaks
@@ -127,13 +127,13 @@
   }
 
   function init(options) {
-    translations = options.translations || {};
-    keepPlaceholder = options.keepPlaceholder;
-    globals = options.globals || {};
-    markMissing = options.markMissing === false ? false : markMissing;
-    postProcessor = options.postProcessor === false ?
-      null : (options.postProcessor || basePostProcessor);
-    setLocale(options.active);
+    translations = options['translations'] || {};
+    keepPlaceholder = options['keepPlaceholder'];
+    globals = options['globals'] || {};
+    markMissing = options['markMissing'] === false ? false : markMissing;
+    postProcessor = options['postProcessor'] === false ?
+      null : (options['postProcessor'] || basePostProcessor);
+    setLocale(options['active']);
   }
 
 })();
