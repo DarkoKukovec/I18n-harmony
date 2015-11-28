@@ -1,8 +1,12 @@
 var I18n = global.I18n;
-var expect = require('chai').expect;
+var chai = require('chai');
+var spies = require('chai-spies');
 var globalTranslations = require('./mock/translations.js');
 var requirejs = require('requirejs');
 var _ = require('lodash');
+
+chai.use(spies);
+var expect = chai.expect;
 
 requirejs.config({ baseUrl: '.' });
 
@@ -313,6 +317,91 @@ describe('Locale', function() {
       I18n.locale = 'mozart';
       expect(I18n.t('test')).to.equal('Test Mozart');
     });
+  });
+});
+
+describe('Default locale', function() {
+  it('should fall back to default locale if active doesn\'t exist', function() {
+    I18n.init({
+      translations: _.cloneDeep(globalTranslations),
+      active: 'acdc',
+      default: 'queen'
+    });
+
+    expect(I18n.t('phrase-2', {what: 'this'})).to.equal('Is this just fantasy?');
+  });
+
+  it('should work if default is set but neither exists', function() {
+    I18n.init({
+      translations: _.cloneDeep(globalTranslations),
+      active: 'acdc',
+      default: 'queen'
+    });
+
+    expect(I18n.t('phrase-42')).to.equal('acdc: phrase-42');
+  });
+});
+
+describe('Custom suffix', function() {
+  it('should work if suffix function is disabled', function() {
+    I18n.init({
+      translations: _.cloneDeep(globalTranslations),
+      active: 'queen',
+      suffixFunction: false
+    });
+
+    expect(I18n.t('phrase-3', {count: 1})).to.equal('queen: phrase-3');
+  });
+
+  it('should work with custom suffix function', function() {
+    I18n.init({
+      translations: {
+        queen: {
+          'test-phrase_not-two': 'Not two',
+          'test-phrase_two': 'Two'
+        }
+      },
+      active: 'queen',
+      suffixFunction: function(count) {
+        return count === 2 ? '_two' : '_not-two';
+      }
+    });
+
+    expect(I18n.t('test-phrase')).to.equal('queen: test-phrase');
+    expect(I18n.t('test-phrase', {count: 1})).to.equal('Not two');
+    expect(I18n.t('test-phrase', {count: 2})).to.equal('Two');
+  });
+
+  it('should work with custom suffix function and default locales', function() {
+    var locales = {acdc: 0, queen: 0};
+    var suffixFn = function(count, key, args, locale) {
+      locales[locale]++;
+      return count === 2 ? '_two' : '_not-two';
+    };
+    var spy = chai.spy(suffixFn);
+    I18n.init({
+      translations: {
+        queen: {
+          'test-phrase_not-two': 'Not two',
+          'test-phrase_two': 'Two'
+        }
+      },
+      default: 'queen',
+      active: 'queen',
+      suffixFunction: spy
+    });
+
+    expect(I18n.t('test-phrase')).to.equal('queen: test-phrase');
+    expect(I18n.t('test-phrase', {count: 1})).to.equal('Not two');
+    expect(I18n.t('test-phrase', {count: 2})).to.equal('Two');
+
+    I18n.locale = 'acdc';
+    expect(I18n.t('test-phrase', {count: 3})).to.equal('Not two');
+    expect(locales).to.eql({acdc: 1, queen: 3});
+
+    expect(I18n.t('test-phrase-2', {count: 3})).to.equal('acdc: test-phrase-2');
+    expect(spy).to.have.been.called.exactly(6);
+    expect(locales).to.eql({acdc: 2, queen: 4});
   });
 });
 

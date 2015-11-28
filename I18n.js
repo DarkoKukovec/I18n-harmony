@@ -4,14 +4,15 @@
   'use strict';
 
   var regex = /\$\{\s*([a-zA-Z0-9\-\_]+)\s*\}/g;
-
-  // Global variables available in all translations
   var globals;
   var activeLocale;
   var translations;
   var localeTranslations;
-  var markMissing = true;
+  var defaultLocale;
+  var defaultTranslations;
+  var markMissing;
   var postProcessor;
+  var suffixFunction;
   var keepPlaceholder;
 
   var I18n = {
@@ -25,8 +26,9 @@
 
   var hasDefine = typeof define === 'function';
   var hasExports = typeof module !== 'undefined' && module['exports'];
-  var root = (typeof window === 'undefined') ? global : window;
+  var root = (typeof window === 'undefined') ? global : /* istanbul ignore next */ window;
 
+  /* istanbul ignore next */
   if (hasDefine) { // AMD Module
     define([], function() {
       return I18n;
@@ -37,9 +39,12 @@
     root['I18n'] = I18n;
   }
 
-  // Default postProcessor - replace newlines with line breaks
-  var basePostProcessor = function(str) {
+  var defaultPostProcessorFn = function(str) {
     return str.replace(/\n/g, '<br />');
+  };
+
+  var defaultSuffixFn = function(count) {
+    return (count === 1 ? '_one' : '_other');
   };
 
   function translate(key, args) {
@@ -47,15 +52,9 @@
     if (!activeLocale) {
       throw new Error('Active locale is not set');
     }
-    var t;
-    if ('count' in args) {
-      var suffix = _getSuffix(args.count);
-      t = localeTranslations[key + suffix] || localeTranslations[key];
-    } else {
-      t = localeTranslations[key];
-    }
+    var t = getTranslation(key, args);
     if (t) {
-      var str = _interpolate(t, _prepareArgs(args));
+      var str = interpolate(t, prepareArgs(args));
       if (postProcessor) {
         str = postProcessor(str);
       }
@@ -67,7 +66,22 @@
     }
   }
 
-  function _interpolate(t, args) {
+  function getSuffix(key, args, locale) {
+    if ('count' in args && suffixFunction) {
+      return suffixFunction(args.count, key, args, locale);
+    }
+    return '';
+  }
+
+  function getTranslation(key, args) {
+    var active = localeTranslations[key + getSuffix(key, args, activeLocale)] || localeTranslations[key];
+    if (!active && defaultTranslations) {
+      active = defaultTranslations[key + getSuffix(key, args, defaultLocale)] || defaultTranslations[key];
+    }
+    return active;
+  }
+
+  function interpolate(t, args) {
     var match = regex.exec(t);
     var lastIndex = 0;
     while(match) {
@@ -83,22 +97,18 @@
     return t;
   }
 
-  function _getSuffix(count) {
-    // TODO: Ability to change this from outside (per language)
-    return (count === 1 ? '_one' : '_other');
-  }
-
-  function _prepareArgs(args) {
+  function prepareArgs(args) {
     var prepared = {};
-    _extend(prepared, globals.all);
-    _extend(prepared, globals[activeLocale]);
-    _extend(prepared, args);
+    extend(prepared, globals.all);
+    extend(prepared, globals[activeLocale]);
+    extend(prepared, args);
     return prepared;
   }
 
-  function _extend(original, additional) {
+  function extend(original, additional) {
     additional = additional || {};
     for (var key in additional) {
+      /* istanbul ignore else */
       if (additional.hasOwnProperty(key)) {
         original[key] = additional[key];
       }
@@ -123,17 +133,22 @@
     }
     locale = locale || activeLocale;
     translations[locale] = translations[locale] || {};
-    _extend(translations[locale], translationObj);
+    extend(translations[locale], translationObj);
+  }
+
+  function setOption(option, defaultOption) {
+    return option === false ? null : (option || defaultOption);
   }
 
   function init(options) {
-    translations = options['translations'] || {};
-    keepPlaceholder = options['keepPlaceholder'];
-    globals = options['globals'] || {};
-    markMissing = options['markMissing'] === false ? false : markMissing;
-    postProcessor = options['postProcessor'] === false ?
-      null : (options['postProcessor'] || basePostProcessor);
+    keepPlaceholder = !!options['keepPlaceholder'];
+    globals = setOption(options['globals'], {});
+    markMissing = setOption(options['markMissing'], true);
+    translations = setOption(options['translations'], {});
+    postProcessor = setOption(options['postProcessor'], defaultPostProcessorFn);
+    suffixFunction = setOption(options['suffixFunction'], defaultSuffixFn);
+    defaultLocale = options['default'] || null;
+    defaultTranslations = translations[options['default']];
     setLocale(options['active']);
   }
-
 })();

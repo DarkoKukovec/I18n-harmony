@@ -8,7 +8,7 @@
 
 I18n library that's using ES2015 [template string](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/template_strings) syntax (but with reduced functionality).
 
-Minified: ~1.1KB (~650B gziped)
+Minified: ~1.3KB (~750B gziped)
 
 Also supports:
 * Global variables (either per locale or for all of them)
@@ -40,8 +40,15 @@ Initializes the library. Options:
   * function that will be executed just before the ``t`` function returns the result
   * receives one argument - the interpolated string
   * default function will replace newlines with line breaks
+* suffixFunction
+  * function that decides which suffix should be used based on the count argument
+  * gets four arguments: count, key, options (passed to the ``t`` function) and current locale (either active or default)
+  * it should return a suffix that will be appended to the key
+  * default function returns ``"_one"`` if count is 1, and ``"_other"`` in all other cases
 * active
   * active locale
+* default (default: ``null``)
+  * default locale that will be used as fallback if the phrase doesn't exist in the active locale
 * keepPlaceholder (default: ``false``)
   * keep the placeholder if the variable isn't defined
 
@@ -62,7 +69,15 @@ Get or set the active locale
 #### globals (read-only)
 Get the globals object - object can be edited, but not replaced.
 
-### Count
-If count property exists in the options argument of the ``t`` function, it will try to find the special version of the translation that's customized for multiple phrasings. The key will in this case have a ``_one`` sufix (if count is 1), or ``_other`` sufix (for all other values of count). If the key doesn't exist, it will fallback to the original translation key.
+## Changelog
 
-TODO: Add ability to define custom functions (per locale) to determine which suffix should be used.
+### 1.2
+* Default locale
+* Suffix function
+
+### 1.1
+* Minified version
+* Readme fixes
+
+### 1.0
+* Initial release

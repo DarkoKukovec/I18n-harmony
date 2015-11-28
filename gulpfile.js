@@ -64,11 +64,11 @@ gulp.task('minify', function (cb) {
   runSequence('closure-compiler', 'min-test', cb);
 });
 
-gulp.task('precommit', ['full-test', 'minify'], function() {
+gulp.task('precommit', ['test'], function() {
   return gulp.src('I18n.min.js')
     .pipe(git.add());
 });
 
 gulp.task('test', function (cb) {
-  runSequence('full-test', 'min-test', cb);
+  runSequence('full-test', 'minify', cb);
 });
