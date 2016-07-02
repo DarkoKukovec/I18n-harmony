@@ -149,6 +149,11 @@ describe('PostProcessor', function() {
   });
 
   it('should execute the custom defined postProcessor function', function() {
+    var options = {
+      visionDevices: 'eyes',
+      theThingAboveEarth: 'sky'
+    };
+
     I18n.init({
       translations: _.cloneDeep(globalTranslations),
       globals: {
@@ -159,15 +164,14 @@ describe('PostProcessor', function() {
         }
       },
       active: 'queen',
-      postProcessor: function(str) {
+      postProcessor: function(str, key, args) {
+        expect(key).to.equal('phrase-5');
+        expect(args).to.eq(options);
         return str.replace(/o/gi, '0');
       }
     });
 
-    expect(I18n.t('phrase-5', {
-      visionDevices: 'eyes',
-      theThingAboveEarth: 'sky'
-    })).to.equal('0pen y0ur eyes,\nL00k up t0 the sky and see,');
+    expect(I18n.t('phrase-5', options)).to.equal('0pen y0ur eyes,\nL00k up t0 the sky and see,');
   });
 
   it('should replace newlines with breaks if the default postProcessor is used', function() {

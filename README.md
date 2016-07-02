@@ -38,7 +38,7 @@ Initializes the library. Options:
   * if a translation is missing, it will add ``locale: `` in front of the key when it's returned by the ``t`` function
 * postProcessor
   * function that will be executed just before the ``t`` function returns the result
-  * receives one argument - the interpolated string
+  * receives three argument - the interpolated string, translation key and received arguments
   * default function will replace newlines with line breaks
 * suffixFunction
   * function that decides which suffix should be used based on the count argument
@@ -70,6 +70,9 @@ Get or set the active locale
 Get the globals object - object can be edited, but not replaced.
 
 ## Changelog
+
+### 1.3
+* Added key and args parameters to the postProcessor function
 
 ### 1.2
 * Default locale

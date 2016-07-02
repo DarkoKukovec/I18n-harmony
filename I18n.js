@@ -56,7 +56,7 @@
     if (t) {
       var str = interpolate(t, prepareArgs(args));
       if (postProcessor) {
-        str = postProcessor(str);
+        str = postProcessor(str, key, args);
       }
       return str;
     } else if (markMissing) {
