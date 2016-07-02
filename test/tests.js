@@ -67,6 +67,15 @@ describe('Missing translation', function() {
 
     expect(I18n.t('phrase-42')).to.equal('phrase-42');
   });
+
+  it('should return true for "has" call if the translation exists', function() {
+    I18n.init({
+      translations: _.cloneDeep(globalTranslations),
+      active: 'queen'
+    });
+
+    expect(I18n.has('phrase-2')).to.equal(true);
+  });
 });
 
 describe('Variable interpolation', function() {
@@ -116,6 +125,10 @@ describe('Quantity', function() {
 
   it('Should choose the single quantity if count is 1', function() {
     expect(I18n.t('phrase-3', { disaster: 'landslide', count: 1})).to.equal('Caught in a landslide,');
+  });
+
+  it('Should return true for "has" call with quantity defined', function() {
+    expect(I18n.has('phrase-3', { disaster: 'landslide', count: 1})).to.equal(true);
   });
 
   it('should choose multi quantity if count is not 1', function() {
@@ -274,6 +287,7 @@ describe('Locale', function() {
     I18n.init({ translations: _.cloneDeep(globalTranslations) });
 
     expect(function() { I18n.t('phrase-2'); }).to.throw('Active locale is not set');
+    expect(function() { I18n.has('phrase-2'); }).to.throw('Active locale is not set');
   });
 
   it('should have the correct locale set', function() {
@@ -335,6 +349,17 @@ describe('Default locale', function() {
     expect(I18n.t('phrase-2', {what: 'this'})).to.equal('Is this just fantasy?');
   });
 
+  it('should return true for "has" call with includeDefault=true', function() {
+    I18n.init({
+      translations: _.cloneDeep(globalTranslations),
+      active: 'acdc',
+      default: 'queen'
+    });
+
+    expect(I18n.has('phrase-2', {what: 'this'})).to.equal(false);
+    expect(I18n.has('phrase-2', {what: 'this'}, true)).to.equal(true);
+  });
+
   it('should work if default is set but neither exists', function() {
     I18n.init({
       translations: _.cloneDeep(globalTranslations),
@@ -343,6 +368,16 @@ describe('Default locale', function() {
     });
 
     expect(I18n.t('phrase-42')).to.equal('acdc: phrase-42');
+  });
+
+  it('should return false for "has" call with includeDefault=true', function() {
+    I18n.init({
+      translations: _.cloneDeep(globalTranslations),
+      active: 'acdc',
+      default: 'queen'
+    });
+
+    expect(I18n.has('phrase-42', null, true)).to.equal(false);
   });
 });
 

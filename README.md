@@ -61,6 +61,9 @@ Add multiple translations to the locale. The first argument is a map of all the 
 #### t(key, [options])
 Get the interpolated string. Options is an object with local variables, and count parameter
 
+#### has(key, [options], [includeDefault=false])
+Check if the translation key exists in the active locale (if includeDefault is set as true, it will also check the default locale)
+
 ### Properties
 
 #### locale
@@ -73,6 +76,7 @@ Get the globals object - object can be edited, but not replaced.
 
 ### 1.3
 * Added key and args parameters to the postProcessor function
+* ``has`` function to check if a translation key exists
 
 ### 1.2
 * Default locale

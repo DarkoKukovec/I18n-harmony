@@ -19,6 +19,7 @@
     't': translate,
     'add': addTranslation,
     'init': init,
+    'has': has,
     set 'locale'(locale) { setLocale(locale); },
     get 'locale'() { return activeLocale; },
     get 'globals'() { return globals; }
@@ -66,6 +67,14 @@
     }
   }
 
+  function has(key, args, includeDefault) {
+    args = args || {};
+    if (!activeLocale) {
+      throw new Error('Active locale is not set');
+    }
+    return typeof getTranslation(key, args, !includeDefault) !== 'undefined';
+  }
+
   function getSuffix(key, args, locale) {
     if ('count' in args && suffixFunction) {
       return suffixFunction(args.count, key, args, locale);
@@ -73,9 +82,9 @@
     return '';
   }
 
-  function getTranslation(key, args) {
+  function getTranslation(key, args, ignoreDefault) {
     var active = localeTranslations[key + getSuffix(key, args, activeLocale)] || localeTranslations[key];
-    if (!active && defaultTranslations) {
+    if (!active && defaultTranslations && !ignoreDefault) {
       active = defaultTranslations[key + getSuffix(key, args, defaultLocale)] || defaultTranslations[key];
     }
     return active;
