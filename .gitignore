@@ -2,3 +2,4 @@ node_modules/*
 bower_components/*
 report/*
 coverage/*
+npm-debug.log

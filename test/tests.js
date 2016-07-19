@@ -306,10 +306,22 @@ describe('Locale', function() {
           'queen': { 'test': 'Test Queen' },
           'acdc': { 'test': 'Test ACDC' }
         },
-        active: 'queen'
+        active: 'queen',
+        default: 'queen'
       });
 
       I18n.locale = 'acdc';
+    });
+
+    it('should use the direct locale', function() {
+      expect(I18n.t('test', {}, 'acdc')).to.equal('Test ACDC');
+      expect(I18n.t('test', {}, 'queen')).to.equal('Test Queen');
+    });
+
+    it('should check the direct locale', function() {
+      expect(I18n.has('test', {}, false, 'acdc')).to.equal(true);
+      expect(I18n.has('test', {}, true, 'bethoven')).to.equal(true);
+      expect(I18n.has('test', {}, false, 'bethoven')).to.equal(false);
     });
 
     it('should have the new locale set', function() {

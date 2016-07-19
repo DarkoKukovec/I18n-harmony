@@ -7,7 +7,6 @@
   var globals;
   var activeLocale;
   var translations;
-  var localeTranslations;
   var defaultLocale;
   var defaultTranslations;
   var markMissing;
@@ -48,31 +47,33 @@
     return (count === 1 ? '_one' : '_other');
   };
 
-  function translate(key, args) {
+  function translate(key, args, locale) {
     args = args || {};
-    if (!activeLocale) {
+    var currentLocale = locale || activeLocale;
+    if (!currentLocale) {
       throw new Error('Active locale is not set');
     }
-    var t = getTranslation(key, args);
+    var t = getTranslation(key, args, false, currentLocale);
     if (t) {
-      var str = interpolate(t, prepareArgs(args));
+      var str = interpolate(t, prepareArgs(args, currentLocale));
       if (postProcessor) {
         str = postProcessor(str, key, args);
       }
       return str;
     } else if (markMissing) {
-      return activeLocale + ': ' + key;
+      return currentLocale + ': ' + key;
     } else {
       return key;
     }
   }
 
-  function has(key, args, includeDefault) {
+  function has(key, args, includeDefault, locale) {
     args = args || {};
+    var currentLocale = locale || activeLocale;
     if (!activeLocale) {
       throw new Error('Active locale is not set');
     }
-    return typeof getTranslation(key, args, !includeDefault) !== 'undefined';
+    return typeof getTranslation(key, args, !includeDefault, currentLocale) !== 'undefined';
   }
 
   function getSuffix(key, args, locale) {
@@ -82,12 +83,13 @@
     return '';
   }
 
-  function getTranslation(key, args, ignoreDefault) {
-    var active = localeTranslations[key + getSuffix(key, args, activeLocale)] || localeTranslations[key];
-    if (!active && defaultTranslations && !ignoreDefault) {
-      active = defaultTranslations[key + getSuffix(key, args, defaultLocale)] || defaultTranslations[key];
+  function getTranslation(key, args, ignoreDefault, currentLocale) {
+    var currentTranslations = translations[currentLocale] || {};
+    var current = currentTranslations[key + getSuffix(key, args, currentLocale)] || currentTranslations[key];
+    if (!current && defaultTranslations && !ignoreDefault) {
+      current = defaultTranslations[key + getSuffix(key, args, defaultLocale)] || defaultTranslations[key];
     }
-    return active;
+    return current;
   }
 
   function interpolate(t, args) {
@@ -106,10 +108,10 @@
     return t;
   }
 
-  function prepareArgs(args) {
+  function prepareArgs(args, currentLocale) {
     var prepared = {};
     extend(prepared, globals.all);
-    extend(prepared, globals[activeLocale]);
+    extend(prepared, globals[currentLocale]);
     extend(prepared, args);
     return prepared;
   }
@@ -126,7 +128,6 @@
   }
 
   function setLocale(locale) {
-    localeTranslations = translations[locale] || {};
     activeLocale = locale;
   }
 

@@ -58,10 +58,10 @@ Add a translation to the locale
 #### add(translations, [locale=activeLocale])
 Add multiple translations to the locale. The first argument is a map of all the translations that should be added.
 
-#### t(key, [options])
+#### t(key, [options], [locale=activeLocale])
 Get the interpolated string. Options is an object with local variables, and count parameter
 
-#### has(key, [options], [includeDefault=false])
+#### has(key, [options], [includeDefault=false], [locale=activeLocale])
 Check if the translation key exists in the active locale (if includeDefault is set as true, it will also check the default locale)
 
 ### Properties
@@ -73,6 +73,9 @@ Get or set the active locale
 Get the globals object - object can be edited, but not replaced.
 
 ## Changelog
+
+### 1.4
+* Added optional ``locale`` parameter to the ``t`` and ``has`` functions
 
 ### 1.3
 * Added key and args parameters to the postProcessor function
