@@ -76,14 +76,19 @@ Get the globals object - object can be edited, but not replaced.
 
 ### 1.5
 * Nested keys
-* New option: ``findTranslation`` - function receives the key and object with translations and should return the translation that should be used
-** Default function will try to get the key directly and if it doesn't succeed, it will split the key with ``nestingSeparator`` and try to find the nested value
-* New option: ``nestingSeparator``, default ``'.'`` - the separator used for nesting
-** Not relevant if ``findTranslation`` function is defined
-* New option: ``suffixSeparator``, default ``'_'`` - separator used for suffix.
-** Default value is set to ``_`` because of the backwards compatibility
-** In order to use nesting, set this value to the same value as ``nestingSeparator``
-** Not relevant if ``suffixFunction`` function is defined
+* New option: ``findTranslation``
+  * function receives the key and object with translations and should return the translation that should be used
+  * Default function will try to get the key directly and if it doesn't succeed, it will split the key with ``nestingSeparator`` and try to find the nested value
+* New option: ``nestingSeparator``
+  * Default value: ``'.'``
+  * The separator used for nesting
+  * Not relevant if ``findTranslation`` function is defined
+* New option: ``suffixSeparator``
+  * Default value: ``'_'``
+  * Separator used for suffix
+  * Default value is set to ``_`` because of the backwards compatibility
+  * In order to use nesting, set this value to the same value as ``nestingSeparator``
+  * Not relevant if ``suffixFunction`` function is defined
 
 ### 1.4
 * Added optional ``locale`` parameter to the ``t`` and ``has`` functions
