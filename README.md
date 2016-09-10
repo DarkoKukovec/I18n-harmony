@@ -8,7 +8,7 @@
 
 I18n library that's using ES2015 [template string](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/template_strings) syntax (but with reduced functionality).
 
-Minified: ~1.3KB (~750B gziped)
+Minified: ~1.6KB (~870B gziped)
 
 Also supports:
 * Global variables (either per locale or for all of them)
