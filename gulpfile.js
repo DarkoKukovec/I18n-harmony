@@ -1,16 +1,12 @@
 /* eslint no-console:0 */
 
-var fs = require('fs');
-var http = require('http');
-var path = require('path');
-
 var gulp = require('gulp');
 var mocha = require('gulp-mocha');
 var istanbul = require('gulp-istanbul');
 var eslint = require('gulp-eslint');
+var compiler = require('google-closure-compiler-js').gulp();
 
 var runSequence = require('run-sequence');
-var _ = require('lodash');
 
 var git = require('gulp-git');
 
@@ -42,39 +38,16 @@ gulp.task('full-test', ['lint'], function (cb) {
     });
 });
 
-gulp.task('closure-compiler', function(done) {
-  var postData = _.map({
-    js_code: fs.readFileSync(path.join(__dirname, 'I18n.js'), 'utf-8'),
-    compilation_level: 'ADVANCED_OPTIMIZATIONS',
-    output_info: 'compiled_code',
-    output_format: 'text',
-    warning_level: 'QUIET',
-    language: 'ECMASCRIPT5_STRICT',
-    language_out: 'ECMASCRIPT5'
-  }, function(value, key) {
-    return key + '=' + encodeURIComponent(value);
-  }).join('&');
-
-  var postOptions = {
-    host: 'closure-compiler.appspot.com',
-    port: '80',
-    path: '/compile',
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded',
-      'Content-Length': Buffer.byteLength(postData)
-    }
-  };
-
-  var minFile = fs.createWriteStream('I18n.min.js');
-  var postReq = http.request(postOptions, function(res) {
-    res.setEncoding('utf8');
-    res.pipe(minFile);
-    res.on('end', done);
-  });
-
-  postReq.write(postData);
-  postReq.end();
+gulp.task('closure-compiler', function() {
+  return gulp.src('I18n.js')
+    .pipe(compiler({
+      compilationLevel: 'ADVANCED',
+      jsOutputFile: 'I18n.min.js',
+      createSourceMap: false,
+      warningLevel: 'QUIET',
+      languageIn: 'ECMASCRIPT5_STRICT'
+    }))
+    .pipe(gulp.dest('./'));
 });
 
 gulp.task('min-test', function (cb) {
