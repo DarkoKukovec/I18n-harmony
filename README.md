@@ -37,19 +37,19 @@ Works as a AMD (Require.js) module, CommonJS (node.js) module or as a global lib
 * If you want more than key-value, you can nest them and use ``nestingSeparator`` to separate the keys
 * Example: ``I18n.t('profile.name')``
 
-## Plural support
+### Plural support
 * When you pass ``count`` to the ``t`` function, it will check if the string should be in plural
 * By default, singular will be when count is 1, and plural otherwise
 * By default, the key will get the suffix ``_one`` or ``_other``
 * The behaviour can be tweaked using the ``suffixSeparator`` or ``suffixFunction``
 
-## Fallbacks
+### Fallbacks
 * Default locale: In case you don't have all phrases translated, you can fall back to the default locale (``default``)
 * Missing locale: In case the key is not found, the key will be returned, but it can be prefixed with the locale in order to simplify debugging (``markMissing``)
 * Missing variable: If a variable is not defined, the placeholder can be either removed or it can stay in the final translation (``keepPlaceholder``)
 * If needed, you can use the ``has`` method if a certain translation exists
 
-## Post processing
+### Post processing
 * Sometimes, there is a need to do some post processing before the translation is ready
 * Default behaviour is to replace all occurances of ``"\n"`` with ``"<br />"``, but it can be overriden with the ``postProcessor`` option
 
