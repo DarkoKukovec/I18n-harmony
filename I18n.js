@@ -13,6 +13,9 @@
   var postProcessor;
   var suffixFunction;
   var keepPlaceholder;
+  var findTranslation;
+  var suffixSeparator;
+  var nestingSeparator;
 
   var I18n = {
     't': translate,
@@ -39,13 +42,27 @@
     root['I18n'] = I18n;
   }
 
-  var defaultPostProcessorFn = function(str) {
+  function defaultPostProcessorFn(str) {
     return str.replace(/\n/g, '<br />');
   };
 
-  var defaultSuffixFn = function(count) {
-    return (count === 1 ? '_one' : '_other');
+  function defaultSuffixFn(count) {
+    return suffixSeparator +(count === 1 ? 'one' : 'other');
   };
+
+  function defaultFindTranslation(key, translations) {
+    if (translations[key]) {
+      return translations[key];
+    }
+
+    var combined = key.split(nestingSeparator);
+    var values = translations;
+    while(combined.length && values) {
+      var subkey = combined.shift();
+      values = values[subkey];
+    }
+    return values;
+  }
 
   function translate(key, args, locale) {
     args = args || {};
@@ -70,7 +87,7 @@
   function has(key, args, includeDefault, locale) {
     args = args || {};
     var currentLocale = locale || activeLocale;
-    if (!activeLocale) {
+    if (!currentLocale) {
       throw new Error('Active locale is not set');
     }
     return typeof getTranslation(key, args, !includeDefault, currentLocale) !== 'undefined';
@@ -85,9 +102,11 @@
 
   function getTranslation(key, args, ignoreDefault, currentLocale) {
     var currentTranslations = translations[currentLocale] || {};
-    var current = currentTranslations[key + getSuffix(key, args, currentLocale)] || currentTranslations[key];
+    var current = findTranslation(key + getSuffix(key, args, currentLocale), currentTranslations)
+      || findTranslation(key, currentTranslations);
     if (!current && defaultTranslations && !ignoreDefault) {
-      current = defaultTranslations[key + getSuffix(key, args, defaultLocale)] || defaultTranslations[key];
+      current = findTranslation(key + getSuffix(key, args, defaultLocale), defaultTranslations)
+        || findTranslation(key, defaultTranslations);
     }
     return current;
   }
@@ -157,7 +176,10 @@
     translations = setOption(options['translations'], {});
     postProcessor = setOption(options['postProcessor'], defaultPostProcessorFn);
     suffixFunction = setOption(options['suffixFunction'], defaultSuffixFn);
+    findTranslation = setOption(options['findTranslation'], defaultFindTranslation);
     defaultLocale = options['default'] || null;
+    suffixSeparator = options['suffixSeparator'] || '_';
+    nestingSeparator = options['nestingSeparator'] || '.';
     defaultTranslations = translations[options['default']];
     setLocale(options['active']);
   }
