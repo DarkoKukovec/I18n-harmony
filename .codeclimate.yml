@@ -11,6 +11,5 @@ engines:
 ratings:
   paths:
   - "**.js"
-exclude_paths: [
-  - "test/*.js"
-]
+exclude_paths:
+- "test/*.js"
