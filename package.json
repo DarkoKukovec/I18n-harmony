@@ -1,6 +1,6 @@
 {
   "name": "i18n-harmony",
-  "version": "1.6.0",
+  "version": "1.6.1",
   "description": "I18n library with ES2015 syntax",
   "main": "I18n.js",
   "author": "Darko Kukovec <darko@kukovec.eu>",
