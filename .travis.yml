@@ -3,7 +3,8 @@ node_js:
   - "node"
 install:
   - npm install
-after_script:
-  - codeclimate-test-reporter < report/node/lcov.info
 script:
   - gulp test
+after_script:
+  - npm install -g codeclimate-test-reporter
+  - codeclimate-test-reporter < report/node/lcov.info

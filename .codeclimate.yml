@@ -1,5 +1,15 @@
-languages:
-  Ruby: false
-  JavaScript: true
-  PHP: false
-  Python: false
+engines:
+  duplication:
+    enabled: true
+    config:
+      languages:
+      - javascript
+  eslint:
+    enabled: true
+  fixme:
+    enabled: true
+ratings:
+  paths:
+  - "**.js"
+exclude_paths:
+- "test/*.js"
