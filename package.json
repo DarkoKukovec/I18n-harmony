@@ -1,6 +1,6 @@
 {
   "name": "i18n-harmony",
-  "version": "1.5.1",
+  "version": "1.6.0",
   "description": "I18n library with ES2015 syntax",
   "main": "I18n.js",
   "author": "Darko Kukovec <darko@kukovec.eu>",
@@ -15,7 +15,7 @@
     "gulp-git": "^1.6.0",
     "gulp-istanbul": "^1.0.0",
     "gulp-mocha": "^3.0.0",
-    "husky": "^0.11.0",
+    "husky": "^0.12.0",
     "lodash": "^4.0.0",
     "mocha": "^3.0.0",
     "requirejs": "^2.1.20",
