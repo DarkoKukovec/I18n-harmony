@@ -66,6 +66,10 @@ Initializes the library. Options:
   * values are maps of global variables
 * markMissing (default: ``true``)
   * if a translation is missing, it will add ``locale: `` in front of the key when it's returned by the ``t`` function
+* preProcessor
+  * function that will execute before the translation key is used to find the translation when `t` and `has` functions are executed
+  * receives the same three arguments as the `t` function
+  * useful in cases where the translation keys have changed, but the code is still using old keys (e.g. during refactoring)
 * postProcessor
   * function that will be executed just before the ``t`` function returns the result
   * receives three argument - the interpolated string, translation key and received arguments

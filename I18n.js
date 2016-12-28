@@ -10,6 +10,7 @@
   var defaultLocale;
   var defaultTranslations;
   var markMissing;
+  var preProcessor;
   var postProcessor;
   var suffixFunction;
   var keepPlaceholder;
@@ -42,6 +43,10 @@
     root['I18n'] = I18n;
   }
 
+  function defaultPreProcessorFn(key) {
+    return key;
+  }
+
   function defaultPostProcessorFn(str) {
     return str.replace(/\n/g, '<br />');
   };
@@ -70,17 +75,18 @@
     if (!currentLocale) {
       throw new Error('Active locale is not set');
     }
-    var t = getTranslation(key, args, false, currentLocale);
+    var processedKey = preProcessor(key, args, locale);
+    var t = getTranslation(processedKey, args, false, currentLocale);
     if (t) {
       var str = interpolate(t, prepareArgs(args, currentLocale));
       if (postProcessor) {
-        str = postProcessor(str, key, args);
+        str = postProcessor(str, processedKey, args);
       }
       return str;
     } else if (markMissing) {
-      return currentLocale + ': ' + key;
+      return currentLocale + ': ' + processedKey;
     } else {
-      return key;
+      return processedKey;
     }
   }
 
@@ -90,7 +96,8 @@
     if (!currentLocale) {
       throw new Error('Active locale is not set');
     }
-    return typeof getTranslation(key, args, !includeDefault, currentLocale) !== 'undefined';
+    var processedKey = preProcessor(key, args, locale);
+    return typeof getTranslation(processedKey, args, !includeDefault, currentLocale) !== 'undefined';
   }
 
   function getSuffix(key, args, locale) {
@@ -174,6 +181,7 @@
     globals = setOption(options['globals'], {});
     markMissing = setOption(options['markMissing'], true);
     translations = setOption(options['translations'], {});
+    preProcessor = setOption(options['preProcessor'], defaultPreProcessorFn);
     postProcessor = setOption(options['postProcessor'], defaultPostProcessorFn);
     suffixFunction = setOption(options['suffixFunction'], defaultSuffixFn);
     findTranslation = setOption(options['findTranslation'], defaultFindTranslation);

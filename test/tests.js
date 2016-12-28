@@ -140,6 +140,46 @@ describe('Quantity', function() {
   });
 });
 
+describe('PreProcessor', function() {
+  it('should update the translation keys', function() {
+    I18n.init({
+      translations: _.cloneDeep(globalTranslations),
+      globals: {
+        all: { what: 'this' },
+        queen: {
+          solution: 'Escape',
+          what: 'reality'
+        }
+      },
+      active: 'queen',
+      preProcessor: function(key) {
+        return key.replace(/\-/g, '.');
+      },
+      postProcessor: false
+    });
+
+    expect(I18n.t('phrase-5', {
+      visionDevices: 'eyes',
+      theThingAboveEarth: 'sky'
+    })).to.equal('Open your eyes,\nLook up to the sky and see,');
+
+    expect(I18n.has('phrase-5', {
+      visionDevices: 'eyes',
+      theThingAboveEarth: 'sky'
+    })).to.equal(true);
+
+    expect(I18n.has('phrase.5', {
+      visionDevices: 'eyes',
+      theThingAboveEarth: 'sky'
+    })).to.equal(true);
+
+    expect(I18n.has('phrase/5', {
+      visionDevices: 'eyes',
+      theThingAboveEarth: 'sky'
+    })).to.equal(false);
+  });
+});
+
 describe('PostProcessor', function() {
   it('should not replace the newline character if postProcessor is disabled', function() {
     I18n.init({
