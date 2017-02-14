@@ -12,7 +12,7 @@
     "google-closure-compiler-js": "^20170124.0.0",
     "gulp": "^3.9.0",
     "gulp-eslint": "^3.0.0",
-    "gulp-git": "^1.6.0",
+    "gulp-git": "^2.0.0",
     "gulp-istanbul": "^1.0.0",
     "gulp-mocha": "^3.0.0",
     "husky": "^0.13.0",
