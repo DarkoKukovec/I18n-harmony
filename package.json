@@ -9,7 +9,7 @@
     "chai": "^3.2.0",
     "chai-spies": "^0.7.1",
     "eslint": "^3.9.1",
-    "google-closure-compiler-js": "^20170218.0.0",
+    "google-closure-compiler-js": "^20170409.0.0",
     "gulp": "^3.9.0",
     "gulp-eslint": "^3.0.0",
     "gulp-git": "^2.0.0",
