@@ -1,5 +1,7 @@
 # I18n-harmony
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/DarkoKukovec/I18n-harmony.svg)](https://greenkeeper.io/)
+
 [![i18n-harmony](https://img.shields.io/npm/v/i18n-harmony.svg?maxAge=2592000)](https://www.npmjs.com/package/i18n-harmony)
 ![i18n-harmony](https://img.shields.io/bower/v/i18n-harmony.svg?maxAge=2592000)
 
